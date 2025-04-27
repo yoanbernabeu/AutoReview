@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
+use App\Dto\DateTimeData;
 use App\Service\DateTimeProcessor;
 use PHPUnit\Framework\TestCase;
 
@@ -19,9 +20,9 @@ class DateTimeProcessorTest extends TestCase
     public function testProcessDateTimeData(): void
     {
         $inputData = [
-            'jour' => '15',
-            'mois' => '04',
-            'année' => '2024',
+            'day' => '15',
+            'month' => '04',
+            'year' => '2024',
             'timestamp' => 1713110400,
             'timezone' => 'Europe/Paris'
         ];
@@ -31,29 +32,30 @@ class DateTimeProcessorTest extends TestCase
         $this->assertIsArray($result);
         $this->assertArrayHasKey('message', $result);
         $this->assertArrayHasKey('processed_data', $result);
+        $this->assertInstanceOf(DateTimeData::class, $result['processed_data']);
         
         $processedData = $result['processed_data'];
-        $this->assertEquals(15, $processedData['day']);
-        $this->assertEquals('04', $processedData['month']);
-        $this->assertEquals('2024', $processedData['year']);
-        $this->assertEquals(1713110400, $processedData['timestamp']);
-        $this->assertEquals('Europe/Paris', $processedData['timezone']);
-        $this->assertFalse($processedData['is_even']);
+        $this->assertEquals(15, $processedData->getDay());
+        $this->assertEquals('04', $processedData->getMonth());
+        $this->assertEquals('2024', $processedData->getYear());
+        $this->assertEquals(1713110400, $processedData->getTimestamp());
+        $this->assertEquals('Europe/Paris', $processedData->getTimezone());
+        $this->assertFalse($processedData->isEvenDay());
     }
 
     public function testProcessDateTimeDataWithEvenDay(): void
     {
         $inputData = [
-            'jour' => '16',
-            'mois' => '04',
-            'année' => '2024',
+            'day' => '16',
+            'month' => '04',
+            'year' => '2024',
             'timestamp' => 1713110400,
             'timezone' => 'Europe/Paris'
         ];
 
         $result = $this->processor->processDateTimeData($inputData);
         
-        $this->assertTrue($result['processed_data']['is_even']);
+        $this->assertTrue($result['processed_data']->isEvenDay());
         $this->assertStringContainsString('PAIR', $result['message']);
     }
 } 

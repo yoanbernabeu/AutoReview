@@ -21,9 +21,9 @@ final class AppController extends AbstractController
     {
         $currentTime = new \DateTime();
         $rawData = [
-            'jour' => $currentTime->format('j'),
-            'mois' => $currentTime->format('m'),
-            'année' => $currentTime->format('Y'),
+            'day' => $currentTime->format('j'),
+            'month' => $currentTime->format('m'),
+            'year' => $currentTime->format('Y'),
             'timestamp' => $currentTime->getTimestamp(),
             'timezone' => $currentTime->getTimezone()->getName()
         ];
