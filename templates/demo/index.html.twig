@@ -3,14 +3,25 @@
 {% block title %}Hello DemoController!{% endblock %}
 
 {% block body %}
-
     <h1>Hello {{ controller_name }}! ✅</h1>
 
-    <h2>Data</h2>
+    <h2>Données utilisateur</h2>
 
-    <p>{{ data.name }}</p>
-    <p>{{ data.age }}</p>
-    <p>{{ data.email }}</p>
-    <p>{{ data.phone }}</p>
-    
+    {% if userData is defined %}
+        <dl>
+            <dt>Nom</dt>
+            <dd>{{ userData.name }}</dd>
+
+            <dt>Âge</dt>
+            <dd>{{ userData.age }}</dd>
+
+            <dt>Email</dt>
+            <dd>{{ userData.email }}</dd>
+
+            <dt>Téléphone</dt>
+            <dd>{{ userData.phone }}</dd>
+        </dl>
+    {% else %}
+        <p class="alert alert-warning">Aucune donnée utilisateur disponible.</p>
+    {% endif %}
 {% endblock %}
