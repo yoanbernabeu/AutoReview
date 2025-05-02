@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Service\UserDataService;
@@ -18,7 +20,7 @@ use JsonException;
  *     "name": "string",
  *     "age": "integer",
  *     "email": "string",
- *     "phone": "string"
+ *     "phone": "string" (format international: +33612345678)
  * }
  */
 final class DemoController extends AbstractController

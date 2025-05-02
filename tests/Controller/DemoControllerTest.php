@@ -17,7 +17,7 @@ class DemoControllerTest extends WebTestCase
             'name' => 'John Doe',
             'age' => 30,
             'email' => 'john@example.com',
-            'phone' => '0123456789'
+            'phone' => '+33612345678'
         ];
 
         $client->request(
@@ -68,5 +68,30 @@ class DemoControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         $response = json_decode($client->getResponse()->getContent(), true);
         $this->assertStringContainsString('Missing required fields', $response['error']);
+    }
+
+    public function testIndexWithInvalidPhoneFormat(): void
+    {
+        $client = static::createClient();
+
+        $data = [
+            'name' => 'John Doe',
+            'age' => 30,
+            'email' => 'john@example.com',
+            'phone' => '0612345678' // Format local non autorisé
+        ];
+
+        $client->request(
+            'POST',
+            '/demo',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($data)
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $response = json_decode($client->getResponse()->getContent(), true);
+        $this->assertStringContainsString('format international', $response['error']);
     }
 } 

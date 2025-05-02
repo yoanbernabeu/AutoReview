@@ -27,7 +27,7 @@ class UserDataServiceTest extends TestCase
             'name' => 'John Doe',
             'age' => 30,
             'email' => 'john@example.com',
-            'phone' => '0123456789'
+            'phone' => '+33612345678'
         ]);
 
         $userData = $this->userDataService->createFromJson($jsonData);
@@ -36,7 +36,7 @@ class UserDataServiceTest extends TestCase
         $this->assertEquals('John Doe', $userData->getName());
         $this->assertEquals(30, $userData->getAge());
         $this->assertEquals('john@example.com', $userData->getEmail());
-        $this->assertEquals('0123456789', $userData->getPhone());
+        $this->assertEquals('+33612345678', $userData->getPhone());
     }
 
     public function testCreateFromJsonWithInvalidJson(): void
@@ -49,5 +49,19 @@ class UserDataServiceTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->userDataService->createFromJson('{"name": "John Doe"}');
+    }
+
+    public function testCreateFromJsonWithInvalidPhoneFormat(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        
+        $jsonData = json_encode([
+            'name' => 'John Doe',
+            'age' => 30,
+            'email' => 'john@example.com',
+            'phone' => '0612345678' // Format local non autorisé
+        ]);
+
+        $this->userDataService->createFromJson($jsonData);
     }
 } 

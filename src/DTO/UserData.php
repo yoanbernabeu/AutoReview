@@ -22,7 +22,10 @@ final class UserData
         private readonly string $email,
 
         #[Assert\NotBlank]
-        #[Assert\Regex(pattern: '/^\+?[0-9]{10,}$/')]
+        #[Assert\Regex(
+            pattern: '/^\+[1-9][0-9]{10,14}$/',
+            message: 'Le numéro de téléphone doit être au format international (ex: +33612345678)'
+        )]
         private readonly string $phone,
     ) {
     }
